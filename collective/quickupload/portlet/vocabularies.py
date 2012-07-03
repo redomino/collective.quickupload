@@ -50,14 +50,17 @@ class UploadFileTypeVocabulary(object):
         portal = getToolByName(context, 'portal_url').getPortalObject()
         flt = [_infoDictForType(portal, tipe) for tipe in _listTypesForInterface(portal, IFileContent)]
         ilt = [_infoDictForType(portal, tipe) for tipe in _listTypesForInterface(portal, IImageContent)]
+
         items = [SimpleTerm('auto', 'auto', context.translate('label_default_portaltype_configuration',
                                                       default=u'Default configuration (Content Type Registry).',
                                                       domain='collective.quickupload')),]
-        items.extend([ SimpleTerm(t['portal_type'], t['portal_type'], t['type_ui_info'])
-                  for t in flt ])
-        items.extend([ SimpleTerm(t['portal_type'], t['portal_type'], t['type_ui_info'])
-                  for t in ilt ])
-
+        all_portal_types = []
+        for t in flt+ilt:
+            portal_type = t['portal_type']
+            if portal_type not in all_portal_types:
+                items.append(SimpleTerm(portal_type, portal_type, t['type_ui_info']))
+                all_portal_types.append(portal_type)
+            
         for fti in portal.portal_types.objectValues():
             if HAS_DEXTERITY and IDexterityFTI.providedBy(fti):
                 fields = getFieldsInOrder(fti.lookupSchema())

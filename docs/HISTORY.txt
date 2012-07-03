@@ -7,6 +7,10 @@ Changelog
 - Fixed upload when filename has special characters under IE.
   [thomasdesvenain]
 
+- Fixed quickupload portlet. Problem with duplicated items in vocabulary 
+  'collective.quickupload.fileTypeVocabulary'
+  [davidemoro]
+
 
 1.5.1 (2012-05-24)
 ------------------
